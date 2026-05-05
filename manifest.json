@@ -1,0 +1,22 @@
+{
+  "name": "My Life Analyzer",
+  "short_name": "Life App",
+  "description": "Personal daily life tracker",
+  "start_url": "/Life-Analyzer/life-analyzer.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/fluency/192/analytics.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/fluency/512/analytics.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

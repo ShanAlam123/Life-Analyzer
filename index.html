@@ -128,10 +128,9 @@ label.field-label:first-child{margin-top:0;}
   <button class="tab" onclick="showTab('history')">📅 History</button>
 </div>
 
-<!-- CHECKLIST -->
 <div id="tab-checklist" class="section active">
   <div class="card">
-    <h3>🕌 Namaz (5 waqt)</h3>
+    <h3>🕌 Prayers (5 Times)</h3>
     <div class="checklist-item" id="ci-fajr"><input type="checkbox" onchange="check(this,'Fajr')"><span class="checklist-label">Fajr</span></div>
     <div class="checklist-item" id="ci-zuhr"><input type="checkbox" onchange="check(this,'Zuhr')"><span class="checklist-label">Zuhr</span></div>
     <div class="checklist-item" id="ci-asr"><input type="checkbox" onchange="check(this,'Asr')"><span class="checklist-label">Asr</span></div>
@@ -139,143 +138,134 @@ label.field-label:first-child{margin-top:0;}
     <div class="checklist-item" id="ci-isha"><input type="checkbox" onchange="check(this,'Isha')"><span class="checklist-label">Isha</span></div>
   </div>
   <div class="card">
-    <h3>📿 Ibadah</h3>
+    <h3>📿 Devotion</h3>
     <div class="checklist-item" id="ci-zikr"><input type="checkbox" onchange="check(this,'Zikr')"><span class="checklist-label">Zikr</span></div>
-    <div class="checklist-item" id="ci-tilawat"><input type="checkbox" onchange="check(this,'Tilawat')"><span class="checklist-label">Tilawat</span></div>
+    <div class="checklist-item" id="ci-tilawat"><input type="checkbox" onchange="check(this,'Tilawat')"><span class="checklist-label">Recitation</span></div>
   </div>
   <div class="card">
-    <h3>🍽 Khana</h3>
-    <div class="checklist-item" id="ci-breakfast"><input type="checkbox" onchange="check(this,'Breakfast')"><span class="checklist-label">Nashta</span></div>
+    <h3>🍽 Meals</h3>
+    <div class="checklist-item" id="ci-breakfast"><input type="checkbox" onchange="check(this,'Breakfast')"><span class="checklist-label">Breakfast</span></div>
     <div class="checklist-item" id="ci-lunch"><input type="checkbox" onchange="check(this,'Lunch')"><span class="checklist-label">Lunch</span></div>
     <div class="checklist-item" id="ci-dinner"><input type="checkbox" onchange="check(this,'Dinner')"><span class="checklist-label">Dinner</span></div>
   </div>
   <div class="card">
     <h3>✅ Daily Task</h3>
-    <div class="checklist-item" id="ci-task"><input type="checkbox" onchange="check(this,'Task')"><span class="checklist-label">Daily task complete kiya</span></div>
+    <div class="checklist-item" id="ci-task"><input type="checkbox" onchange="check(this,'Task')"><span class="checklist-label">Completed daily task</span></div>
   </div>
   <button class="btn btn-save" onclick="showTab('time')">Next: Time Tracker →</button>
 </div>
 
-<!-- TIME -->
 <div id="tab-time" class="section">
   <div class="card">
-    <h3>⏱ Waqt ka hisaab (ghante)</h3>
-    <div class="time-row"><div class="dot" style="background:#4f46e5"></div><span class="time-label">📚 Padhai / Study</span><input type="number" min="0" max="24" value="0" id="t-study"><span>hrs</span></div>
-    <div class="time-row"><div class="dot" style="background:#10b981"></div><span class="time-label">🕌 Ibadah</span><input type="number" min="0" max="24" value="0" id="t-ibadah"><span>hrs</span></div>
-    <div class="time-row"><div class="dot" style="background:#f59e0b"></div><span class="time-label">😴 Neend / Sleep</span><input type="number" min="0" max="24" value="0" id="t-sleep"><span>hrs</span></div>
-    <div class="time-row"><div class="dot" style="background:#ef4444"></div><span class="time-label">📱 Phone scroll</span><input type="number" min="0" max="24" value="0" id="t-phone"><span>hrs</span></div>
-    <div class="time-row"><div class="dot" style="background:#8b5cf6"></div><span class="time-label">🍽 Khana / Meals</span><input type="number" min="0" max="24" value="0" id="t-meals"><span>hrs</span></div>
-    <div class="time-row"><div class="dot" style="background:#6b7280"></div><span class="time-label">🔄 Baaki / Other</span><input type="number" min="0" max="24" value="0" id="t-other"><span>hrs</span></div>
+    <h3>⏱ Time Tracking (Hours)</h3>
+    <div class="time-row"><div class="dot" style="background:#4f46e5"></div><span class="time-label">📚 Study / Work</span><input type="number" min="0" max="24" value="0" id="t-study"><span>hrs</span></div>
+    <div class="time-row"><div class="dot" style="background:#10b981"></div><span class="time-label">🕌 Prayer / Devotion</span><input type="number" min="0" max="24" value="0" id="t-ibadah"><span>hrs</span></div>
+    <div class="time-row"><div class="dot" style="background:#f59e0b"></div><span class="time-label">😴 Sleep</span><input type="number" min="0" max="24" value="0" id="t-sleep"><span>hrs</span></div>
+    <div class="time-row"><div class="dot" style="background:#ef4444"></div><span class="time-label">📱 Phone Usage</span><input type="number" min="0" max="24" value="0" id="t-phone"><span>hrs</span></div>
+    <div class="time-row"><div class="dot" style="background:#8b5cf6"></div><span class="time-label">🍽 Meals</span><input type="number" min="0" max="24" value="0" id="t-meals"><span>hrs</span></div>
+    <div class="time-row"><div class="dot" style="background:#6b7280"></div><span class="time-label">🔄 Other</span><input type="number" min="0" max="24" value="0" id="t-other"><span>hrs</span></div>
   </div>
   <div class="card">
-    <h3>😴 Neend timing</h3>
+    <h3>😴 Sleep Timing</h3>
     <div class="sleep-row">
-      <div class="sleep-field"><label>Soye kab</label><input type="time" id="sleep-time"></div>
-      <div class="sleep-field"><label>Uthe kab</label><input type="time" id="wake-time"></div>
+      <div class="sleep-field"><label>Slept at</label><input type="time" id="sleep-time"></div>
+      <div class="sleep-field"><label>Woke up at</label><input type="time" id="wake-time"></div>
     </div>
   </div>
   <button class="btn btn-save" onclick="showTab('reflect')">Next: Reflection →</button>
 </div>
 
-<!-- REFLECT -->
 <div id="tab-reflect" class="section">
   <div class="card">
-    <h3>📝 Aaj ka reflection</h3>
-    <label class="field-label">🌟 Gratitude — aaj kya achha hua?</label>
-    <textarea id="gratitude" placeholder="Alhumdulillah..."></textarea>
-    <label class="field-label">💡 Learning — aaj kya seekha?</label>
-    <textarea id="learning" placeholder="Aaj ye seekha..."></textarea>
-    <label class="field-label">❌ Mistakes — kya galti hui?</label>
-    <textarea id="mistakes" placeholder="Kal se ye improve karunga..."></textarea>
-    <label class="field-label">📅 Tomorrow plan — kal kya karna hai?</label>
-    <textarea id="tomorrow" placeholder="Kal ka plan..."></textarea>
+    <h3>📝 Daily Reflection</h3>
+    <label class="field-label">🌟 Gratitude — What went well today?</label>
+    <textarea id="gratitude" placeholder="Alhumdulillah for..."></textarea>
+    <label class="field-label">💡 Learning — What did you learn today?</label>
+    <textarea id="learning" placeholder="Today I learned..."></textarea>
+    <label class="field-label">❌ Mistakes — Any areas to improve?</label>
+    <textarea id="mistakes" placeholder="Tomorrow I will improve..."></textarea>
+    <label class="field-label">📅 Tomorrow's Plan — What needs to be done?</label>
+    <textarea id="tomorrow" placeholder="My plan for tomorrow..."></textarea>
   </div>
   <button class="btn btn-save" onclick="saveDay()">💾 Save Today's Log</button>
 </div>
 
-<!-- CHARTS -->
 <div id="tab-charts" class="section">
   <div class="metrics">
-    <div class="metric"><div class="metric-val" id="m-score">0%</div><div class="metric-label">Aaj ka score</div></div>
-    <div class="metric"><div class="metric-val" id="m-namaz">0/5</div><div class="metric-label">Namaz</div></div>
-    <div class="metric"><div class="metric-val" id="m-study">0h</div><div class="metric-label">Study time</div></div>
-    <div class="metric"><div class="metric-val" id="m-phone">0h</div><div class="metric-label">Phone time</div></div>
+    <div class="metric"><div class="metric-val" id="m-score">0%</div><div class="metric-label">Daily Score</div></div>
+    <div class="metric"><div class="metric-val" id="m-namaz">0/5</div><div class="metric-label">Prayers</div></div>
+    <div class="metric"><div class="metric-val" id="m-study">0h</div><div class="metric-label">Study Time</div></div>
+    <div class="metric"><div class="metric-val" id="m-phone">0h</div><div class="metric-label">Phone Time</div></div>
   </div>
   <div class="card">
-    <h3>🕐 Time distribution</h3>
+    <h3>🕐 Time Distribution</h3>
     <div style="position:relative;width:100%;height:250px;"><canvas id="pie-chart"></canvas></div>
   </div>
   <div class="card">
-    <h3>✅ Checklist progress</h3>
+    <h3>✅ Checklist Progress</h3>
     <div id="progress-section"></div>
   </div>
   <div class="card">
-    <h3>📈 Weekly study vs phone</h3>
+    <h3>📈 Weekly Study vs Phone</h3>
     <div style="position:relative;width:100%;height:200px;"><canvas id="bar-chart"></canvas></div>
   </div>
 </div>
 
-<!-- HISTORY -->
 <div id="tab-history" class="section">
-  <div id="history-list"><div class="empty-msg">Koi entry nahi hai abhi! 😊</div></div>
+  <div id="history-list"><div class="empty-msg">No entries found yet! 😊</div></div>
 </div>
 
-<!-- FLOATING CAMERA -->
 <button class="floating-cam" onclick="openCamera()">📷</button>
 
-<!-- CAMERA MODAL -->
 <div class="modal-overlay" id="cam-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
 
-    <!-- Step 1: Live Camera -->
     <div id="step-cam">
-      <div class="modal-title">📷 Diary Photo Lo</div>
+      <div class="modal-title">📷 Take a Photo of Your Diary</div>
       <div class="cam-wrap"><video id="cam-video" autoplay playsinline></video></div>
       <div class="shutter-row"><button class="shutter-btn" onclick="takeSnap()">📸</button></div>
-      <button class="btn btn-outline" onclick="closeCamera()">✖ Band Karo</button>
+      <button class="btn btn-outline" onclick="closeCamera()">✖ Close</button>
     </div>
 
-    <!-- Step 2: Preview + Blocks -->
     <div id="step-blocks" style="display:none;">
-      <div class="modal-title" id="blocks-title">🤖 AI Analyse Kar Raha Hai...</div>
+      <div class="modal-title" id="blocks-title">🤖 AI is Analyzing...</div>
       <img id="snap-preview" alt="photo">
 
       <div id="ai-loading-box" class="ai-loading">
         <div class="spin">⏳</div>
-        <div>Gemini aapki photo dekh raha hai...</div>
+        <div>Gemini is reading your photo...</div>
       </div>
 
       <div id="blocks-ready" style="display:none;">
         <div class="work-blocks" id="blocks-list"></div>
-        <button class="add-block-btn" onclick="addBlock()">＋ Apna block manually add karo</button>
+        <button class="add-block-btn" onclick="addBlock()">＋ Add manual block</button>
         <div class="cam-action-row">
-          <button class="btn btn-outline" onclick="retake()">🔄 Dobara</button>
-          <button class="btn btn-save" onclick="saveDiary()">💾 Save Karo</button>
+          <button class="btn btn-outline" onclick="retake()">🔄 Retake</button>
+          <button class="btn btn-save" onclick="saveDiary()">💾 Save Entry</button>
         </div>
       </div>
 
       <div id="blocks-error" style="display:none;">
-        <p style="color:#ef4444;font-size:13px;margin-bottom:12px;">⚠️ AI nahi chala — manually blocks add karo:</p>
+        <p style="color:#ef4444;font-size:13px;margin-bottom:12px;">⚠️ AI failed — Add blocks manually:</p>
         <div class="work-blocks" id="blocks-list-err"></div>
-        <button class="add-block-btn" onclick="addBlock()">＋ Block add karo</button>
+        <button class="add-block-btn" onclick="addBlock()">＋ Add Block</button>
         <div class="cam-action-row">
-          <button class="btn btn-outline" onclick="retake()">🔄 Dobara</button>
-          <button class="btn btn-save" onclick="saveDiary()">💾 Save Karo</button>
+          <button class="btn btn-outline" onclick="retake()">🔄 Retake</button>
+          <button class="btn btn-save" onclick="saveDiary()">💾 Save Entry</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- API KEY MODAL -->
 <div class="key-overlay" id="key-overlay">
   <div class="key-box">
     <h3>🔑 Gemini API Key</h3>
-    <p>Google AI Studio (aistudio.google.com) se key banao aur yahan paste karo. Sirf aapke browser mein save hoti hai.</p>
+    <p>Get your key from Google AI Studio (aistudio.google.com) and paste it here. It is saved locally in your browser.</p>
     <input type="password" class="key-input" id="key-input" placeholder="AIza...">
-    <button class="btn btn-save" onclick="saveKey()">✅ Save Karo</button>
-    <button class="btn btn-outline" style="margin-top:8px;" onclick="closeKeyModal()">Band Karo</button>
+    <button class="btn btn-save" onclick="saveKey()">✅ Save Key</button>
+    <button class="btn btn-outline" style="margin-top:8px;" onclick="closeKeyModal()">Close</button>
   </div>
 </div>
 
@@ -294,10 +284,10 @@ function openKeyModal(){ document.getElementById('key-overlay').classList.add('o
 function closeKeyModal(){ document.getElementById('key-overlay').classList.remove('open'); }
 function saveKey(){
   const k=document.getElementById('key-input').value.trim();
-  if(!k){alert('Key khali hai!');return;}
+  if(!k){alert('Key is empty!');return;}
   localStorage.setItem('gemini-key',k);
   closeKeyModal();
-  alert('✅ API Key save ho gayi!');
+  alert('✅ API Key saved successfully!');
 }
 
 // TABS
@@ -325,7 +315,7 @@ function saveDay(){
   const score=Math.round(all.filter(c=>checks[c]).length/all.length*100);
   history.unshift({date:new Date().toLocaleDateString('en-GB'),fullDate:new Date().toISOString(),checks:{...checks},times:t,gratitude:document.getElementById('gratitude').value,learning:document.getElementById('learning').value,mistakes:document.getElementById('mistakes').value,tomorrow:document.getElementById('tomorrow').value,sleep:document.getElementById('sleep-time').value,wake:document.getElementById('wake-time').value,score,type:'log'});
   localStorage.setItem('life-history',JSON.stringify(history));
-  alert('✅ Aaj ka log save ho gaya! Score: '+score+'%');
+  alert('✅ Today\'s log saved! Score: '+score+'%');
   showTab('charts');
 }
 
@@ -340,7 +330,7 @@ async function openCamera(){
     camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
   }catch(e){
     try{camStream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}
-    catch(e2){alert('Camera allow nahi hua!\n'+e2.message);closeCamera();return;}
+    catch(e2){alert('Camera access denied!\n'+e2.message);closeCamera();return;}
   }
   document.getElementById('cam-video').srcObject=camStream;
 }
@@ -359,7 +349,7 @@ function takeSnap(){
   document.getElementById('step-blocks').style.display='block';
   const prev=document.getElementById('snap-preview');
   prev.src=capturedImg;prev.style.display='block';
-  document.getElementById('blocks-title').textContent='🤖 AI Analyse Kar Raha Hai...';
+  document.getElementById('blocks-title').textContent='🤖 AI is Analyzing...';
   document.getElementById('ai-loading-box').style.display='block';
   document.getElementById('blocks-ready').style.display='none';
   document.getElementById('blocks-error').style.display='none';
@@ -374,10 +364,10 @@ async function analysePhoto(){
     const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[
-        {text:`Is photo mein jo bhi dikh raha hai usse dekh ke daily life work blocks banao.
-Sirf JSON array return karo, koi extra text nahi:
-[{"icon":"📚","title":"Kaam","time":"~2 hrs","desc":"Description Hindi mein"}]
-Max 5 blocks. Agar specific kaam nahi dikh raha toh general blocks banao.`},
+        {text:`Analyze this photo and identify daily life work blocks.
+Return ONLY a JSON array, no extra text:
+[{"icon":"📚","title":"Task","time":"~2 hrs","desc":"Description in English"}]
+Max 5 blocks. If no specific task is visible, create general productivity blocks.`},
         {inline_data:{mime_type:'image/jpeg',data:base64}}
       ]}],generationConfig:{maxOutputTokens:400}})
     });
@@ -392,13 +382,13 @@ Max 5 blocks. Agar specific kaam nahi dikh raha toh general blocks banao.`},
 function showError(){
   document.getElementById('ai-loading-box').style.display='none';
   document.getElementById('blocks-error').style.display='block';
-  document.getElementById('blocks-title').textContent='📋 Blocks Add Karo';
+  document.getElementById('blocks-title').textContent='📋 Add Blocks';
 }
 
 function showBlocksUI(listId,sectionId){
   document.getElementById('ai-loading-box').style.display='none';
   document.getElementById(sectionId).style.display='block';
-  document.getElementById('blocks-title').textContent='📋 AI ne ye blocks banaye — edit kar sakte ho';
+  document.getElementById('blocks-title').textContent='📋 AI Generated Blocks — Feel free to edit';
   renderBlocks(listId);
 }
 
@@ -427,7 +417,7 @@ function delBlock(i){
 }
 
 function addBlock(){
-  currentBlocks.push({icon:'📝',title:'Naya kaam',time:'~1 hr',desc:'Describe karo'});
+  currentBlocks.push({icon:'📝',title:'New Task',time:'~1 hr',desc:'Describe task'});
   const ready=document.getElementById('blocks-ready').style.display!=='none';
   if(ready){renderBlocks('blocks-list');}
   else{document.getElementById('blocks-error').style.display='block';renderBlocks('blocks-list-err');}
@@ -439,7 +429,7 @@ function saveDiary(){
   localStorage.setItem('diary-entries',JSON.stringify(diaryEntries));
   closeCamera();
   showTab('history');
-  alert('✅ Diary entry save ho gayi!');
+  alert('✅ Diary entry saved successfully!');
 }
 
 // CHARTS
@@ -456,8 +446,8 @@ function renderCharts(){
   const vals=[t.study,t.ibadah,t.sleep,t.phone,t.meals,t.other];
   const cd=vals.some(v=>v>0)?vals:[3,1,7,2,1,2];
   if(pieChart)pieChart.destroy();
-  pieChart=new Chart(document.getElementById('pie-chart'),{type:'doughnut',data:{labels:['Study','Ibadah','Sleep','Phone','Meals','Other'],datasets:[{data:cd,backgroundColor:['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#6b7280'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12}}}}});
-  const items=[{label:'Namaz',val:namaz,max:5,color:'#10b981'},{label:'Meals',val:['Breakfast','Lunch','Dinner'].filter(c=>checks[c]).length,max:3,color:'#8b5cf6'},{label:'Ibadah',val:['Zikr','Tilawat'].filter(c=>checks[c]).length,max:2,color:'#4f46e5'},{label:'Daily Task',val:checks['Task']?1:0,max:1,color:'#f59e0b'}];
+  pieChart=new Chart(document.getElementById('pie-chart'),{type:'doughnut',data:{labels:['Study','Prayer','Sleep','Phone','Meals','Other'],datasets:[{data:cd,backgroundColor:['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#6b7280'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12}}}}});
+  const items=[{label:'Prayers',val:namaz,max:5,color:'#10b981'},{label:'Meals',val:['Breakfast','Lunch','Dinner'].filter(c=>checks[c]).length,max:3,color:'#8b5cf6'},{label:'Devotion',val:['Zikr','Tilawat'].filter(c=>checks[c]).length,max:2,color:'#4f46e5'},{label:'Daily Task',val:checks['Task']?1:0,max:1,color:'#f59e0b'}];
   document.getElementById('progress-section').innerHTML=items.map(it=>`<div class="progress-wrap"><div class="progress-label"><span>${it.label}</span><span>${it.val}/${it.max}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${Math.round(it.val/it.max*100)}%;background:${it.color};"></div></div></div>`).join('');
   const last7=history.slice(0,7).reverse();
   const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -469,7 +459,7 @@ function renderCharts(){
 function renderHistory(){
   const list=document.getElementById('history-list');
   const all=[...diaryEntries,...history].sort((a,b)=>new Date(b.fullDate)-new Date(a.fullDate));
-  if(!all.length){list.innerHTML='<div class="empty-msg">Koi entry nahi hai abhi! 😊</div>';return;}
+  if(!all.length){list.innerHTML='<div class="empty-msg">No entries found yet! 😊</div>';return;}
   list.innerHTML=all.map(e=>{
     if(e.type==='diary'){
       return `<div class="diary-entry">

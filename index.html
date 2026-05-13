@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="/Life-Analyzer/manifest.json">
+<link rel="manifest" href="/Life-Analyzer/manifest.json">
 <title>My Life Analyzer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;}
-.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:20px;text-align:center;}
-.header h1{font-size:22px;margin-bottom:4px;}
-.header p{font-size:13px;opacity:0.7;}
-.tabs{display:flex;background:#fff;border-bottom:2px solid #e0e0e0;overflow-x:auto;}
-.tab{flex:1;padding:12px 8px;font-size:13px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;color:#888;white-space:nowrap;min-width:80px;}
+body{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a1a2e;padding-bottom:100px;}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
+.header-left h1{font-size:20px;}
+.header-left p{font-size:12px;opacity:0.6;margin-top:2px;}
+.header-key-btn{background:rgba(255,255,255,0.15);border:none;color:#fff;border-radius:10px;padding:8px 12px;font-size:12px;cursor:pointer;}
+.tabs{display:flex;background:#fff;border-bottom:2px solid #e0e0e0;overflow-x:auto;position:sticky;top:0;z-index:10;}
+.tab{flex:1;padding:12px 8px;font-size:12px;font-weight:600;text-align:center;cursor:pointer;border:none;background:none;color:#888;white-space:nowrap;min-width:70px;}
 .tab.active{color:#4f46e5;border-bottom:3px solid #4f46e5;margin-bottom:-2px;}
 .section{display:none;padding:16px;max-width:500px;margin:0 auto;}
 .section.active{display:block;}
@@ -37,6 +38,7 @@ label.field-label:first-child{margin-top:0;}
 .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
 .btn-save{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;}
 .btn-save:hover{opacity:0.9;}
+.btn-outline{background:#f3f4f6;color:#374151;border:1.5px solid #e0e0e0;}
 .metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .metric{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 .metric-val{font-size:26px;font-weight:700;color:#4f46e5;}
@@ -45,26 +47,77 @@ label.field-label:first-child{margin-top:0;}
 .progress-label{display:flex;justify-content:space-between;font-size:12px;color:#555;margin-bottom:4px;}
 .progress-bar{background:#f0f0f0;border-radius:999px;height:8px;overflow:hidden;}
 .progress-fill{height:100%;border-radius:999px;transition:width 0.4s;}
-.history-item{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;}
-.history-date{font-size:13px;font-weight:700;color:#1a1a2e;}
-.history-sub{font-size:11px;color:#888;margin-top:3px;}
-.score-badge{padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;}
-.empty-msg{text-align:center;padding:40px 20px;color:#aaa;font-size:14px;}
 .sleep-row{display:flex;gap:12px;flex-wrap:wrap;}
 .sleep-field{flex:1;min-width:120px;}
 .sleep-field label{font-size:12px;color:#888;font-weight:600;display:block;margin-bottom:6px;}
 .sleep-field input[type=time]{width:100%;padding:8px 10px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:14px;color:#333;}
-.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;margin:2px;}
-.tag-green{background:#dcfce7;color:#166534;}
-.tag-red{background:#fee2e2;color:#991b1b;}
-.section-title{font-size:11px;color:#888;font-weight:600;margin:8px 0 4px;}
+.empty-msg{text-align:center;padding:40px 20px;color:#aaa;font-size:14px;}
+
+/* FLOATING CAMERA BUTTON */
+.floating-cam{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99;width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:4px solid #fff;box-shadow:0 6px 24px rgba(79,70,229,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:30px;transition:transform 0.2s,box-shadow 0.2s;}
+.floating-cam:hover{transform:translateX(-50%) scale(1.08);box-shadow:0 8px 30px rgba(79,70,229,0.6);}
+.floating-cam:active{transform:translateX(-50%) scale(0.94);}
+
+/* CAMERA MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-sheet{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:500px;padding:20px 20px 32px;max-height:94vh;overflow-y:auto;}
+.modal-handle{width:40px;height:4px;background:#e0e0e0;border-radius:999px;margin:0 auto 16px;}
+.modal-title{font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:14px;}
+.cam-wrap{width:100%;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:4/3;position:relative;}
+#cam-video{width:100%;height:100%;object-fit:cover;display:block;}
+.shutter-row{display:flex;justify-content:center;margin:14px 0;}
+.shutter-btn{width:68px;height:68px;border-radius:50%;background:#fff;border:5px solid #4f46e5;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 16px rgba(0,0,0,0.15);transition:transform 0.15s;}
+.shutter-btn:active{transform:scale(0.9);}
+#snap-preview{width:100%;border-radius:14px;margin-bottom:12px;display:none;}
+.ai-loading{text-align:center;padding:20px;color:#6366f1;font-size:14px;}
+.spin{display:inline-block;font-size:28px;animation:spin 1s linear infinite;margin-bottom:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* WORK BLOCKS */
+.work-block{background:#f8f7ff;border:1.5px solid #c7d2fe;border-radius:14px;padding:13px;margin-bottom:10px;}
+.wb-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.wb-icon{font-size:20px;}
+.wb-title{font-size:14px;font-weight:700;color:#1a1a2e;flex:1;}
+.wb-time{font-size:11px;color:#6366f1;font-weight:600;background:#ede9fe;padding:2px 8px;border-radius:999px;}
+.wb-del{background:#fee2e2;color:#991b1b;border:none;border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;}
+.wb-desc{font-size:12px;color:#555;line-height:1.5;margin-bottom:8px;}
+.wb-inputs{display:flex;gap:6px;}
+.wb-inputs input{flex:1;padding:6px 8px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:12px;}
+.wb-inputs input:last-child{max-width:80px;}
+.add-block-btn{width:100%;padding:10px;border:2px dashed #c7d2fe;border-radius:12px;background:none;color:#6366f1;font-size:13px;font-weight:600;cursor:pointer;margin:6px 0;}
+.add-block-btn:hover{background:#f0f4ff;}
+.cam-action-row{display:flex;gap:10px;margin-top:12px;}
+.cam-action-row .btn{margin-top:0;flex:1;padding:12px;font-size:14px;}
+
+/* HISTORY */
+.diary-entry{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.de-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.de-photo{width:50px;height:50px;border-radius:10px;object-fit:cover;margin-right:10px;flex-shrink:0;}
+.de-title{font-size:13px;font-weight:700;color:#1a1a2e;}
+.de-sub{font-size:11px;color:#888;margin-top:2px;}
+.de-blocks{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.de-block-chip{background:#ede9fe;color:#4f46e5;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:600;}
+.score-badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;}
+
+/* API KEY MODAL */
+.key-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+.key-overlay.open{display:flex;}
+.key-box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:380px;}
+.key-box h3{font-size:16px;font-weight:700;margin-bottom:6px;}
+.key-box p{font-size:12px;color:#888;margin-bottom:14px;line-height:1.5;}
+.key-input{width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:13px;margin-bottom:10px;}
+.key-input:focus{outline:none;border-color:#4f46e5;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>📊 My Life Analyzer</h1>
-  <p id="date-display"></p>
+  <div class="header-left">
+    <h1>📊 My Life Analyzer</h1>
+    <p id="date-display"></p>
+  </div>
+  <button class="header-key-btn" onclick="openKeyModal()">🔑 API Key</button>
 </div>
 
 <div class="tabs">
@@ -75,7 +128,7 @@ label.field-label:first-child{margin-top:0;}
   <button class="tab" onclick="showTab('history')">📅 History</button>
 </div>
 
-<!-- CHECKLIST TAB -->
+<!-- CHECKLIST -->
 <div id="tab-checklist" class="section active">
   <div class="card">
     <h3>🕌 Namaz (5 waqt)</h3>
@@ -103,7 +156,7 @@ label.field-label:first-child{margin-top:0;}
   <button class="btn btn-save" onclick="showTab('time')">Next: Time Tracker →</button>
 </div>
 
-<!-- TIME TAB -->
+<!-- TIME -->
 <div id="tab-time" class="section">
   <div class="card">
     <h3>⏱ Waqt ka hisaab (ghante)</h3>
@@ -124,7 +177,7 @@ label.field-label:first-child{margin-top:0;}
   <button class="btn btn-save" onclick="showTab('reflect')">Next: Reflection →</button>
 </div>
 
-<!-- REFLECT TAB -->
+<!-- REFLECT -->
 <div id="tab-reflect" class="section">
   <div class="card">
     <h3>📝 Aaj ka reflection</h3>
@@ -140,7 +193,7 @@ label.field-label:first-child{margin-top:0;}
   <button class="btn btn-save" onclick="saveDay()">💾 Save Today's Log</button>
 </div>
 
-<!-- CHARTS TAB -->
+<!-- CHARTS -->
 <div id="tab-charts" class="section">
   <div class="metrics">
     <div class="metric"><div class="metric-val" id="m-score">0%</div><div class="metric-label">Aaj ka score</div></div>
@@ -150,9 +203,7 @@ label.field-label:first-child{margin-top:0;}
   </div>
   <div class="card">
     <h3>🕐 Time distribution</h3>
-    <div style="position:relative;width:100%;height:250px;">
-      <canvas id="pie-chart" role="img" aria-label="Time distribution pie chart">Time breakdown across activities.</canvas>
-    </div>
+    <div style="position:relative;width:100%;height:250px;"><canvas id="pie-chart"></canvas></div>
   </div>
   <div class="card">
     <h3>✅ Checklist progress</h3>
@@ -160,155 +211,290 @@ label.field-label:first-child{margin-top:0;}
   </div>
   <div class="card">
     <h3>📈 Weekly study vs phone</h3>
-    <div style="position:relative;width:100%;height:200px;">
-      <canvas id="bar-chart" role="img" aria-label="Weekly study vs phone hours bar chart">Weekly study and phone hours comparison.</canvas>
+    <div style="position:relative;width:100%;height:200px;"><canvas id="bar-chart"></canvas></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div id="tab-history" class="section">
+  <div id="history-list"><div class="empty-msg">Koi entry nahi hai abhi! 😊</div></div>
+</div>
+
+<!-- FLOATING CAMERA -->
+<button class="floating-cam" onclick="openCamera()">📷</button>
+
+<!-- CAMERA MODAL -->
+<div class="modal-overlay" id="cam-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+
+    <!-- Step 1: Live Camera -->
+    <div id="step-cam">
+      <div class="modal-title">📷 Diary Photo Lo</div>
+      <div class="cam-wrap"><video id="cam-video" autoplay playsinline></video></div>
+      <div class="shutter-row"><button class="shutter-btn" onclick="takeSnap()">📸</button></div>
+      <button class="btn btn-outline" onclick="closeCamera()">✖ Band Karo</button>
+    </div>
+
+    <!-- Step 2: Preview + Blocks -->
+    <div id="step-blocks" style="display:none;">
+      <div class="modal-title" id="blocks-title">🤖 AI Analyse Kar Raha Hai...</div>
+      <img id="snap-preview" alt="photo">
+
+      <div id="ai-loading-box" class="ai-loading">
+        <div class="spin">⏳</div>
+        <div>Gemini aapki photo dekh raha hai...</div>
+      </div>
+
+      <div id="blocks-ready" style="display:none;">
+        <div class="work-blocks" id="blocks-list"></div>
+        <button class="add-block-btn" onclick="addBlock()">＋ Apna block manually add karo</button>
+        <div class="cam-action-row">
+          <button class="btn btn-outline" onclick="retake()">🔄 Dobara</button>
+          <button class="btn btn-save" onclick="saveDiary()">💾 Save Karo</button>
+        </div>
+      </div>
+
+      <div id="blocks-error" style="display:none;">
+        <p style="color:#ef4444;font-size:13px;margin-bottom:12px;">⚠️ AI nahi chala — manually blocks add karo:</p>
+        <div class="work-blocks" id="blocks-list-err"></div>
+        <button class="add-block-btn" onclick="addBlock()">＋ Block add karo</button>
+        <div class="cam-action-row">
+          <button class="btn btn-outline" onclick="retake()">🔄 Dobara</button>
+          <button class="btn btn-save" onclick="saveDiary()">💾 Save Karo</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- HISTORY TAB -->
-<div id="tab-history" class="section">
-  <div class="card">
-    <h3>📅 Past entries</h3>
-    <div id="history-list"><div class="empty-msg">Koi entry nahi hai abhi!<br>Pehle log save karo 😊</div></div>
+<!-- API KEY MODAL -->
+<div class="key-overlay" id="key-overlay">
+  <div class="key-box">
+    <h3>🔑 Gemini API Key</h3>
+    <p>Google AI Studio (aistudio.google.com) se key banao aur yahan paste karo. Sirf aapke browser mein save hoti hai.</p>
+    <input type="password" class="key-input" id="key-input" placeholder="AIza...">
+    <button class="btn btn-save" onclick="saveKey()">✅ Save Karo</button>
+    <button class="btn btn-outline" style="margin-top:8px;" onclick="closeKeyModal()">Band Karo</button>
   </div>
 </div>
 
 <script>
 let checks = {};
-let history = JSON.parse(localStorage.getItem('life-history') || '[]');
-let pieChart, barChart;
+let history = JSON.parse(localStorage.getItem('life-history')||'[]');
+let diaryEntries = JSON.parse(localStorage.getItem('diary-entries')||'[]');
+let pieChart, barChart, camStream=null, capturedImg=null, currentBlocks=[];
 
 document.getElementById('date-display').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+const sk = localStorage.getItem('gemini-key');
+if(sk) document.getElementById('key-input').value = sk;
 
-function showTab(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+// KEY MODAL
+function openKeyModal(){ document.getElementById('key-overlay').classList.add('open'); }
+function closeKeyModal(){ document.getElementById('key-overlay').classList.remove('open'); }
+function saveKey(){
+  const k=document.getElementById('key-input').value.trim();
+  if(!k){alert('Key khali hai!');return;}
+  localStorage.setItem('gemini-key',k);
+  closeKeyModal();
+  alert('✅ API Key save ho gayi!');
+}
+
+// TABS
+function showTab(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
-  const tabs = document.querySelectorAll('.tab');
-  const names = ['checklist','time','reflect','charts','history'];
-  tabs[names.indexOf(name)].classList.add('active');
+  ['checklist','time','reflect','charts','history'].forEach((n,i)=>{
+    if(n===name) document.querySelectorAll('.tab')[i].classList.add('active');
+  });
   if(name==='charts') renderCharts();
   if(name==='history') renderHistory();
 }
 
-function check(el, name) {
-  const item = el.closest('.checklist-item');
-  if(el.checked) { item.classList.add('done'); checks[name]=true; }
-  else { item.classList.remove('done'); delete checks[name]; }
+// CHECKLIST
+function check(el,name){
+  const item=el.closest('.checklist-item');
+  if(el.checked){item.classList.add('done');checks[name]=true;}
+  else{item.classList.remove('done');delete checks[name];}
 }
-
-function getTimeVals() {
-  return {
-    study: parseFloat(document.getElementById('t-study').value)||0,
-    ibadah: parseFloat(document.getElementById('t-ibadah').value)||0,
-    sleep: parseFloat(document.getElementById('t-sleep').value)||0,
-    phone: parseFloat(document.getElementById('t-phone').value)||0,
-    meals: parseFloat(document.getElementById('t-meals').value)||0,
-    other: parseFloat(document.getElementById('t-other').value)||0,
-  };
-}
-
-function saveDay() {
-  const t = getTimeVals();
-  const allItems = ['Fajr','Zuhr','Asr','Maghrib','Isha','Zikr','Tilawat','Breakfast','Lunch','Dinner','Task'];
-  const done = allItems.filter(c=>checks[c]).length;
-  const score = Math.round(done/allItems.length*100);
-  const entry = {
-    date: new Date().toLocaleDateString('en-GB'),
-    fullDate: new Date().toISOString(),
-    checks: {...checks},
-    times: t,
-    gratitude: document.getElementById('gratitude').value,
-    learning: document.getElementById('learning').value,
-    mistakes: document.getElementById('mistakes').value,
-    tomorrow: document.getElementById('tomorrow').value,
-    sleep: document.getElementById('sleep-time').value,
-    wake: document.getElementById('wake-time').value,
-    score
-  };
-  history.unshift(entry);
-  localStorage.setItem('life-history', JSON.stringify(history));
+function getTime(){return{study:+document.getElementById('t-study').value||0,ibadah:+document.getElementById('t-ibadah').value||0,sleep:+document.getElementById('t-sleep').value||0,phone:+document.getElementById('t-phone').value||0,meals:+document.getElementById('t-meals').value||0,other:+document.getElementById('t-other').value||0};}
+function saveDay(){
+  const t=getTime();
+  const all=['Fajr','Zuhr','Asr','Maghrib','Isha','Zikr','Tilawat','Breakfast','Lunch','Dinner','Task'];
+  const score=Math.round(all.filter(c=>checks[c]).length/all.length*100);
+  history.unshift({date:new Date().toLocaleDateString('en-GB'),fullDate:new Date().toISOString(),checks:{...checks},times:t,gratitude:document.getElementById('gratitude').value,learning:document.getElementById('learning').value,mistakes:document.getElementById('mistakes').value,tomorrow:document.getElementById('tomorrow').value,sleep:document.getElementById('sleep-time').value,wake:document.getElementById('wake-time').value,score,type:'log'});
+  localStorage.setItem('life-history',JSON.stringify(history));
   alert('✅ Aaj ka log save ho gaya! Score: '+score+'%');
   showTab('charts');
 }
 
-function renderCharts() {
-  const t = getTimeVals();
-  const allItems = ['Fajr','Zuhr','Asr','Maghrib','Isha','Zikr','Tilawat','Breakfast','Lunch','Dinner','Task'];
-  const done = allItems.filter(c=>checks[c]).length;
-  const score = Math.round(done/allItems.length*100);
-  const namaz = ['Fajr','Zuhr','Asr','Maghrib','Isha'].filter(c=>checks[c]).length;
+// CAMERA
+async function openCamera(){
+  const modal=document.getElementById('cam-modal');
+  modal.classList.add('open');
+  document.getElementById('step-cam').style.display='block';
+  document.getElementById('step-blocks').style.display='none';
+  capturedImg=null; currentBlocks=[];
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+  }catch(e){
+    try{camStream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});}
+    catch(e2){alert('Camera allow nahi hua!\n'+e2.message);closeCamera();return;}
+  }
+  document.getElementById('cam-video').srcObject=camStream;
+}
+function stopStream(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}}
+function closeCamera(){stopStream();document.getElementById('cam-modal').classList.remove('open');}
+function retake(){stopStream();document.getElementById('step-blocks').style.display='none';openCamera();}
 
-  document.getElementById('m-score').textContent = score+'%';
-  document.getElementById('m-namaz').textContent = namaz+'/5';
-  document.getElementById('m-study').textContent = t.study+'h';
-  document.getElementById('m-phone').textContent = t.phone+'h';
-
-  const vals = [t.study, t.ibadah, t.sleep, t.phone, t.meals, t.other];
-  const labels = ['Study','Ibadah','Sleep','Phone','Meals','Other'];
-  const colors = ['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#6b7280'];
-  const hasData = vals.some(v=>v>0);
-  const chartData = hasData ? vals : [3,1,7,2,1,2];
-
-  if(pieChart) pieChart.destroy();
-  pieChart = new Chart(document.getElementById('pie-chart'), {
-    type:'doughnut',
-    data:{ labels, datasets:[{ data:chartData, backgroundColor:colors, borderWidth:3, borderColor:'#fff' }]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:12}, padding:12 } } } }
-  });
-
-  const ps = document.getElementById('progress-section');
-  const items = [
-    {label:'Namaz', val:namaz, max:5, color:'#10b981'},
-    {label:'Meals', val:['Breakfast','Lunch','Dinner'].filter(c=>checks[c]).length, max:3, color:'#8b5cf6'},
-    {label:'Ibadah (Zikr+Tilawat)', val:['Zikr','Tilawat'].filter(c=>checks[c]).length, max:2, color:'#4f46e5'},
-    {label:'Daily Task', val:checks['Task']?1:0, max:1, color:'#f59e0b'},
-  ];
-  ps.innerHTML = items.map(it=>`
-    <div class="progress-wrap">
-      <div class="progress-label"><span>${it.label}</span><span>${it.val}/${it.max}</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${Math.round(it.val/it.max*100)}%;background:${it.color};"></div></div>
-    </div>`).join('');
-
-  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  const last7 = history.slice(0,7).reverse();
-  const studyD = days.map((_,i) => last7[i]?.times?.study||0);
-  const phoneD = days.map((_,i) => last7[i]?.times?.phone||0);
-
-  if(barChart) barChart.destroy();
-  barChart = new Chart(document.getElementById('bar-chart'), {
-    type:'bar',
-    data:{ labels:days, datasets:[
-      { label:'Study', data:studyD, backgroundColor:'#4f46e5' },
-      { label:'Phone', data:phoneD, backgroundColor:'#ef4444' }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom'}}, scales:{ y:{ beginAtZero:true, ticks:{callback:v=>v+'h'} } } }
-  });
+function takeSnap(){
+  const v=document.getElementById('cam-video');
+  const c=document.createElement('canvas');
+  c.width=v.videoWidth;c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  capturedImg=c.toDataURL('image/jpeg',0.8);
+  stopStream();
+  document.getElementById('step-cam').style.display='none';
+  document.getElementById('step-blocks').style.display='block';
+  const prev=document.getElementById('snap-preview');
+  prev.src=capturedImg;prev.style.display='block';
+  document.getElementById('blocks-title').textContent='🤖 AI Analyse Kar Raha Hai...';
+  document.getElementById('ai-loading-box').style.display='block';
+  document.getElementById('blocks-ready').style.display='none';
+  document.getElementById('blocks-error').style.display='none';
+  analysePhoto();
 }
 
-function renderHistory() {
-  const list = document.getElementById('history-list');
-  if(!history.length){ list.innerHTML='<div class="empty-msg">Koi entry nahi hai!<br>Pehle log save karo 😊</div>'; return; }
-  list.innerHTML = history.map(e=>{
-    const namaz = ['Fajr','Zuhr','Asr','Maghrib','Isha'].filter(c=>e.checks[c]).length;
-    const color = e.score>=70?'#dcfce7':e.score>=40?'#fef9c3':'#fee2e2';
-    const tcolor = e.score>=70?'#166534':e.score>=40?'#854d0e':'#991b1b';
-    return `<div class="history-item">
-      <div>
-        <div class="history-date">${e.date}</div>
-        <div class="history-sub">📚 ${e.times.study}h study | 😴 ${e.times.sleep}h sleep | 📱 ${e.times.phone}h phone | 🕌 ${namaz}/5 namaz</div>
-        ${e.gratitude?`<div style="font-size:11px;color:#4f46e5;margin-top:4px;">🌟 ${e.gratitude.substring(0,40)}${e.gratitude.length>40?'...':''}</div>`:''}
+async function analysePhoto(){
+  const apiKey=localStorage.getItem('gemini-key');
+  if(!apiKey){showError();return;}
+  try{
+    const base64=capturedImg.split(',')[1];
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[
+        {text:`Is photo mein jo bhi dikh raha hai usse dekh ke daily life work blocks banao.
+Sirf JSON array return karo, koi extra text nahi:
+[{"icon":"📚","title":"Kaam","time":"~2 hrs","desc":"Description Hindi mein"}]
+Max 5 blocks. Agar specific kaam nahi dikh raha toh general blocks banao.`},
+        {inline_data:{mime_type:'image/jpeg',data:base64}}
+      ]}],generationConfig:{maxOutputTokens:400}})
+    });
+    const data=await res.json();
+    if(data.error)throw new Error(data.error.message);
+    let txt=data.candidates[0].content.parts[0].text.trim().replace(/```json|```/g,'').trim();
+    currentBlocks=JSON.parse(txt);
+    showBlocksUI('blocks-list','blocks-ready');
+  }catch(e){showError();}
+}
+
+function showError(){
+  document.getElementById('ai-loading-box').style.display='none';
+  document.getElementById('blocks-error').style.display='block';
+  document.getElementById('blocks-title').textContent='📋 Blocks Add Karo';
+}
+
+function showBlocksUI(listId,sectionId){
+  document.getElementById('ai-loading-box').style.display='none';
+  document.getElementById(sectionId).style.display='block';
+  document.getElementById('blocks-title').textContent='📋 AI ne ye blocks banaye — edit kar sakte ho';
+  renderBlocks(listId);
+}
+
+function renderBlocks(listId){
+  const el=document.getElementById(listId);
+  el.innerHTML=currentBlocks.map((b,i)=>`
+    <div class="work-block" id="wb-${i}">
+      <div class="wb-top">
+        <span class="wb-icon">${b.icon}</span>
+        <span class="wb-title">${b.title}</span>
+        <span class="wb-time">${b.time}</span>
+        <button class="wb-del" onclick="delBlock(${i})">✕</button>
       </div>
-      <span class="score-badge" style="background:${color};color:${tcolor};">${e.score}%</span>
-    </div>`;
+      <div class="wb-desc">${b.desc}</div>
+      <div class="wb-inputs">
+        <input value="${b.title}" placeholder="Title" onchange="currentBlocks[${i}].title=this.value">
+        <input value="${b.time}" placeholder="~1 hr" onchange="currentBlocks[${i}].time=this.value">
+      </div>
+    </div>`).join('');
+}
+
+function delBlock(i){
+  currentBlocks.splice(i,1);
+  const id=document.getElementById('blocks-ready').style.display!=='none'?'blocks-list':'blocks-list-err';
+  renderBlocks(id);
+}
+
+function addBlock(){
+  currentBlocks.push({icon:'📝',title:'Naya kaam',time:'~1 hr',desc:'Describe karo'});
+  const ready=document.getElementById('blocks-ready').style.display!=='none';
+  if(ready){renderBlocks('blocks-list');}
+  else{document.getElementById('blocks-error').style.display='block';renderBlocks('blocks-list-err');}
+}
+
+function saveDiary(){
+  diaryEntries.unshift({date:new Date().toLocaleDateString('en-GB'),time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),fullDate:new Date().toISOString(),image:capturedImg,blocks:[...currentBlocks],type:'diary'});
+  if(diaryEntries.length>40)diaryEntries=diaryEntries.slice(0,40);
+  localStorage.setItem('diary-entries',JSON.stringify(diaryEntries));
+  closeCamera();
+  showTab('history');
+  alert('✅ Diary entry save ho gayi!');
+}
+
+// CHARTS
+function renderCharts(){
+  const t=getTime();
+  const all=['Fajr','Zuhr','Asr','Maghrib','Isha','Zikr','Tilawat','Breakfast','Lunch','Dinner','Task'];
+  const done=all.filter(c=>checks[c]).length;
+  const score=Math.round(done/all.length*100);
+  const namaz=['Fajr','Zuhr','Asr','Maghrib','Isha'].filter(c=>checks[c]).length;
+  document.getElementById('m-score').textContent=score+'%';
+  document.getElementById('m-namaz').textContent=namaz+'/5';
+  document.getElementById('m-study').textContent=t.study+'h';
+  document.getElementById('m-phone').textContent=t.phone+'h';
+  const vals=[t.study,t.ibadah,t.sleep,t.phone,t.meals,t.other];
+  const cd=vals.some(v=>v>0)?vals:[3,1,7,2,1,2];
+  if(pieChart)pieChart.destroy();
+  pieChart=new Chart(document.getElementById('pie-chart'),{type:'doughnut',data:{labels:['Study','Ibadah','Sleep','Phone','Meals','Other'],datasets:[{data:cd,backgroundColor:['#4f46e5','#10b981','#f59e0b','#ef4444','#8b5cf6','#6b7280'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:12},padding:12}}}}});
+  const items=[{label:'Namaz',val:namaz,max:5,color:'#10b981'},{label:'Meals',val:['Breakfast','Lunch','Dinner'].filter(c=>checks[c]).length,max:3,color:'#8b5cf6'},{label:'Ibadah',val:['Zikr','Tilawat'].filter(c=>checks[c]).length,max:2,color:'#4f46e5'},{label:'Daily Task',val:checks['Task']?1:0,max:1,color:'#f59e0b'}];
+  document.getElementById('progress-section').innerHTML=items.map(it=>`<div class="progress-wrap"><div class="progress-label"><span>${it.label}</span><span>${it.val}/${it.max}</span></div><div class="progress-bar"><div class="progress-fill" style="width:${Math.round(it.val/it.max*100)}%;background:${it.color};"></div></div></div>`).join('');
+  const last7=history.slice(0,7).reverse();
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  if(barChart)barChart.destroy();
+  barChart=new Chart(document.getElementById('bar-chart'),{type:'bar',data:{labels:days,datasets:[{label:'Study',data:days.map((_,i)=>last7[i]?.times?.study||0),backgroundColor:'#4f46e5'},{label:'Phone',data:days.map((_,i)=>last7[i]?.times?.phone||0),backgroundColor:'#ef4444'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'h'}}}}});
+}
+
+// HISTORY
+function renderHistory(){
+  const list=document.getElementById('history-list');
+  const all=[...diaryEntries,...history].sort((a,b)=>new Date(b.fullDate)-new Date(a.fullDate));
+  if(!all.length){list.innerHTML='<div class="empty-msg">Koi entry nahi hai abhi! 😊</div>';return;}
+  list.innerHTML=all.map(e=>{
+    if(e.type==='diary'){
+      return `<div class="diary-entry">
+        <div class="de-header">
+          <div style="display:flex;align-items:center;flex:1;">
+            ${e.image?`<img class="de-photo" src="${e.image}" alt="photo">`:''}
+            <div><div class="de-title">📷 Diary Entry</div><div class="de-sub">${e.date} • ${e.time} • ${e.blocks.length} blocks</div></div>
+          </div>
+        </div>
+        <div class="de-blocks">${e.blocks.map(b=>`<span class="de-block-chip">${b.icon} ${b.title} · ${b.time}</span>`).join('')}</div>
+      </div>`;
+    }else{
+      const namaz=['Fajr','Zuhr','Asr','Maghrib','Isha'].filter(c=>e.checks[c]).length;
+      const color=e.score>=70?'#dcfce7':e.score>=40?'#fef9c3':'#fee2e2';
+      const tcolor=e.score>=70?'#166534':e.score>=40?'#854d0e':'#991b1b';
+      return `<div class="diary-entry">
+        <div class="de-header">
+          <div><div class="de-title">📋 Daily Log — ${e.date}</div><div class="de-sub">📚 ${e.times.study}h · 😴 ${e.times.sleep}h · 📱 ${e.times.phone}h · 🕌 ${namaz}/5</div>${e.gratitude?`<div style="font-size:11px;color:#4f46e5;margin-top:3px;">🌟 ${e.gratitude.substring(0,45)}${e.gratitude.length>45?'...':''}</div>`:''}</div>
+          <span class="score-badge" style="background:${color};color:${tcolor};">${e.score}%</span>
+        </div>
+      </div>`;
+    }
   }).join('');
 }
-
 renderHistory();
-// Step 3: API Key Placeholder
-const API_KEY = "PASTE_YOUR_KEY_HERE";
-console.log("App is ready for analysis!");
 </script>
 </body>
 </html>

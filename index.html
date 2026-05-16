@@ -486,5 +486,22 @@ function renderHistory(){
 }
 renderHistory();
 </script>
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDW9x4iFVhJo8Db3pC9_xfZGSiGpySNTOE",
+  authDomain: "my-life-analyzer.firebaseapp.com",
+  projectId: "my-life-analyzer",
+  storageBucket: "my-life-analyzer.firebasestorage.app",
+  messagingSenderId: "947662141345",
+  appId: "1:947662141345:web:42ca0270238b9e2e0cbde0"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 </body>
 </html>

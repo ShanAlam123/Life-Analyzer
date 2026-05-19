@@ -77,5 +77,200 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .card h3{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:0.08em;}
 .accent-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 
-/* CHECKLIST */
-.checklist-item{display:flex;align-items:center;gap
+/* EXTRA SMART FILTER ROW */
+.dashboard-control-row {
+  display: flex; justify-content: space-between; align-items: center; 
+  padding: 10px 20px; background: var(--surface); border-bottom: 1px solid var(--border);
+  flex-wrap: wrap; gap: 8px;
+}
+.timeline-filters { display: flex; gap: 6px; }
+</style>
+<script>
+  // Script directly inside head to prevent screen white-flash before styling loads
+  if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light');
+  }
+</script>
+</head>
+<body>
+
+<div id="boot-screen">
+  <div class="boot-logo">📊</div>
+  <div class="boot-text">INITIALIZING LIFE ANALYZER...</div>
+  <div class="boot-bar"><div class="boot-fill"></div></div>
+  <div class="boot-error" id="boot-error-msg"></div>
+</div>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">🧬</div>
+    <div>
+      <div class="header-title">Life Analyzer</div>
+      <div class="header-date" id="live-date">LOADING SYSTEM TIME...</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn" id="sync-status-btn"><span class="sync-dot synced" id="sync-indicator"></span><span id="sync-text">Synced</span></button>
+    <button class="header-btn" id="theme-toggle-btn" title="Toggle Theme">🌙</button>
+  </div>
+</div>
+
+<div id="status-bar">
+  <span>SYS_STATUS: RUNNING</span>
+  <span>|</span>
+  <span id="entries-counter">ENTRIES: 0</span>
+</div>
+
+<div class="dashboard-control-row">
+  <div class="timeline-filters">
+    <button class="filter-btn active" onclick="changeTimeline('all', this)">All</button>
+    <button class="filter-btn" onclick="changeTimeline('day', this)">Daily</button>
+    <button class="filter-btn" onclick="changeTimeline('weekly', this)">Weekly</button>
+    <button class="filter-btn" onclick="changeTimeline('monthly', this)">Monthly</button>
+  </div>
+  <button class="header-btn" id="share-report-btn" style="border-color:var(--success); color:var(--success);">📤 Share Report</button>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('overview')">Overview</button>
+  <button class="tab" onclick="switchTab('tracker')">Track</button>
+  <button class="tab" onclick="switchTab('history')">History</button>
+  <button class="tab" onclick="switchTab('settings')">Settings</button>
+</div>
+
+<div id="overview" class="section active">
+  <div class="card">
+    <h3><span class="accent-dot"></span>Performance Overview</h3>
+    <p style="font-size: 13px; color: var(--text2);">Welcome to your dashboard. Use the timeline filters above to change perspectives.</p>
+  </div>
+</div>
+
+<div id="tracker" class="section">
+  <div class="card">
+    <h3><span class="accent-dot"></span>Log Daily Stats</h3>
+    <p style="font-size: 13px; color: var(--text2);">Tracking configurations go here...</p>
+  </div>
+</div>
+
+<div id="history" class="section">
+  <div class="card">
+    <h3><span class="accent-dot"></span>Log History</h3>
+    <p style="font-size: 13px; color: var(--text2);">Historical data display pipeline.</p>
+  </div>
+</div>
+
+<div id="settings" class="section">
+  <div class="card">
+    <h3><span class="accent-dot"></span>System Configurations</h3>
+    <p style="font-size: 13px; color: var(--text2);">Data reset options and profile parameters.</p>
+  </div>
+</div>
+
+<script>
+// Mock or Global Entries array for calculation 
+let allEntries = []; 
+
+// Hide boot loader screen after simulation
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const boot = document.getElementById('boot-screen');
+    if(boot) boot.classList.add('hidden');
+    
+    // Set live date string
+    const dateEl = document.getElementById('live-date');
+    if(dateEl) dateEl.innerText = new Date().toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+  }, 1000);
+});
+
+// Tab switcher functionality
+function switchTab(tabId) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  document.getElementById(tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ================================================
+// 1. DYNAMIC LIGHT/DARK THEME IMPLEMENTATION
+// ================================================
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+function updateThemeButton() {
+  if (document.documentElement.classList.contains('light')) {
+    themeToggleBtn.innerText = '☀️';
+  } else {
+    themeToggleBtn.innerText = '🌙';
+  }
+}
+updateThemeButton(); // Running initial setup
+
+themeToggleBtn.addEventListener('click', () => {
+  if (document.documentElement.classList.contains('light')) {
+    document.documentElement.classList.remove('light');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.classList.add('light');
+    localStorage.setItem('theme', 'light');
+  }
+  updateThemeButton();
+});
+
+// ================================================
+// 2. TIMELINE VIEW FILTER ENGINE (DAILY/WEEKLY/MONTHLY)
+// ================================================
+function changeTimeline(range, buttonNode) {
+  // Update button highlights inside timeline row
+  buttonNode.parentNode.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  buttonNode.classList.add('active');
+
+  const now = new Date();
+  
+  // Filtering algorithm
+  const filteredData = allEntries.filter(entry => {
+    if (range === 'all') return true;
+    
+    const entryDate = new Date(entry.date || entry.createdAt || new Date());
+    const diffTime = Math.abs(now - entryDate);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (range === 'day') return diffDays <= 1;
+    if (range === 'weekly') return diffDays <= 7;
+    if (range === 'monthly') return diffDays <= 30;
+    return true;
+  });
+
+  console.log(`Timeline context switched to: ${range}. Loaded elements:`, filteredData.length);
+  // Yahan aap apna data UI updating function bind kar sakte hain jaise: renderCharts(filteredData);
+}
+
+// ================================================
+// 3. SECURE REPORT SHARING ENGINE (WEB SHARE & FALLBACK)
+// ================================================
+document.getElementById('share-report-btn').addEventListener('click', async () => {
+  const count = allEntries.length;
+  const activeTimeline = document.querySelector('.timeline-filters .filter-btn.active').innerText;
+  
+  const reportSummary = `📊 *Life Analyzer Report Summary*\n\n📅 Scope: ${activeTimeline} View\n📈 Total Activity Logs: ${count}\n⚡ System Status: Synchronized\n\nLink to view dashboard: ${window.location.href}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Life Analyzer Operational Report',
+        text: reportSummary
+      });
+    } catch (err) {
+      console.log('Share action aborted by consumer pipeline.');
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(reportSummary);
+      alert('📋 Report layout copied securely to clipboard buffer! Open WhatsApp/Email to share.');
+    } catch (err) {
+      alert('Transmission failure writing to Clipboard ecosystem.');
+    }
+  }
+});
+</script>
+</body>
+</html>

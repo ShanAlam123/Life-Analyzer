@@ -12,10 +12,10 @@
   --bg: #090b0f;
   --surface: rgba(21, 24, 33, 0.75);
   --surface2: rgba(28, 32, 48, 0.9);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(108, 99, 255, 0.5);
-  --accent: #6c63ff;
-  --accent-gradient: linear-gradient(135deg, #6c63ff, #8b5cf6);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-focus: #ff6b35;
+  --accent: #ff6b35;
+  --accent-gradient: linear-gradient(135deg, #ff6b35, #ff8c00);
   --accent2: #00d9a6;
   --text: #e8eaf0;
   --text2: #8892a4;
@@ -24,29 +24,39 @@
   --warning: #f6c90e;
   --danger: #ff6b6b;
   --glass-blur: blur(20px);
-  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  
+  /* High Contrast Auth Specifics */
+  --auth-tab-bg: #141822;
+  --auth-tab-active: #fff;
+  --auth-tab-active-text: #090b0f;
 }
 
 :root[data-theme="light"] {
   --bg: #f4f6fa;
-  --surface: rgba(255, 255, 255, 0.75);
-  --surface2: rgba(240, 243, 250, 0.9);
-  --border: rgba(0, 0, 0, 0.06);
-  --border-focus: rgba(108, 99, 255, 0.5);
-  --accent: #5546ff;
-  --accent-gradient: linear-gradient(135deg, #5546ff, #7c3aed);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface2: rgba(235, 239, 248, 0.9);
+  --border: rgba(0, 0, 0, 0.15);
+  --border-focus: #e65100;
+  --accent: #e65100;
+  --accent-gradient: linear-gradient(135deg, #e65100, #ff6d00);
   --accent2: #05b58c;
   --text: #1a1d24;
-  --text2: #657185;
-  --text3: #a0aec0;
+  --text2: #4a5568;
+  --text3: #8892a4;
   --success: #05b58c;
   --warning: #e6b400;
   --danger: #e53e3e;
   --glass-blur: blur(20px);
-  --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
+  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
+
+  /* High Contrast Auth Specifics */
+  --auth-tab-bg: #e2e8f0;
+  --auth-tab-active: #1a1d24;
+  --auth-tab-active-text: #fff;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.3s ease, border-color 0.3s ease; }
+* { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease, color 0.2s ease; }
 body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
 body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
 
@@ -70,22 +80,32 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .boot-fill { height: 100%; background: var(--accent-gradient); border-radius: 999px; animation: load 2s ease forwards; }
 @keyframes load { from { width: 0 } to { width: 100% } }
 
-/* AUTH SCREEN */
+/* HIGH CONTRAST AUTH SCREEN BUTTONS & TABS */
 #auth-screen { position: fixed; inset: 0; background: var(--bg); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
 #auth-screen.show { display: flex; }
-.auth-box { padding: 32px 24px; width: 100%; max-width: 400px; }
-.auth-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-.auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 24px; }
-.auth-tabs { display: flex; background: var(--surface2); border-radius: 10px; padding: 4px; margin-bottom: 20px; }
-.auth-tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 8px; cursor: pointer; color: var(--text2); border: none; background: none; font-family: 'Sora', sans-serif; }
-.auth-tab.active { background: var(--accent); color: #fff; box-shadow: var(--shadow); }
-.auth-field { margin-bottom: 16px; position: relative; }
-.auth-field label { font-size: 11px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
-.auth-field input { width: 100%; padding: 12px 40px 12px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text); font-family: 'Sora', sans-serif; }
-.auth-field input:focus { outline: none; border-color: var(--accent); }
-.pass-toggle { position: absolute; right: 14px; bottom: 12px; cursor: pointer; color: var(--text2); user-select: none; font-size: 16px; }
+.auth-box { padding: 36px 28px; width: 100%; max-width: 420px; }
+.auth-title { text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+.auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 28px; }
 
-/* BUTTONS & HEADERS */
+.auth-tabs { display: flex; background: var(--auth-tab-bg); border-radius: 12px; padding: 6px; margin-bottom: 24px; border: 1px solid var(--border); }
+.auth-tab { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; color: var(--text2); border: none; background: none; font-family: 'Sora', sans-serif; }
+.auth-tab.active { background: var(--auth-tab-active); color: var(--auth-tab-active-text); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+.auth-field { margin-bottom: 20px; position: relative; }
+.auth-field label { font-size: 11px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+.auth-field input { width: 100%; padding: 14px 44px 14px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text); font-family: 'Sora', sans-serif; }
+.auth-field input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2); }
+.pass-toggle { position: absolute; right: 16px; bottom: 14px; cursor: pointer; color: var(--text2); user-select: none; font-size: 16px; }
+
+/* HIGH CONTRAST BUTTON SIGNATURES */
+.btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.btn-save { background: var(--accent-gradient); color: #fff; box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3); }
+.btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 107, 53, 0.45); }
+.btn-save:active { transform: translateY(0); }
+.btn-outline { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+.btn-outline:hover { border-color: var(--text2); color: var(--text); }
+
+/* APP LAYOUT & HEADERS */
 .header { position: sticky; top: 0; z-index: 50; background: var(--surface); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
 .header-brand { display: flex; align-items: center; gap: 10px; }
 .header-logo { width: 38px; height: 38px; background: var(--accent-gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
@@ -98,7 +118,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 
 /* FLOATING INTERFACES & TABS */
 .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; position: sticky; top: 67px; z-index: 40; }
-.tab { flex: 1; padding: 14px 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; border: none; background: none; color: var(--text3); border-bottom: 2px solid transparent; text-transform: uppercase; letter-spacing: 0.05em; }
+.tab { flex: 1; padding: 14px 8px; font-size: 11px; font-weight: 700; text-align: center; cursor: pointer; border: none; background: none; color: var(--text3); border-bottom: 2px solid transparent; text-transform: uppercase; letter-spacing: 0.05em; min-width: 120px; }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .section { display: none; padding: 20px; max-width: 540px; margin: 0 auto; position: relative; z-index: 1; }
 .section.active { display: block; }
@@ -117,10 +137,6 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 
 textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 14px; color: var(--text); font-family: inherit; line-height: 1.6; min-height: 80px; margin-bottom: 12px; }
 textarea:focus { outline: none; border-color: var(--accent); }
-.btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-.btn-save { background: var(--accent-gradient); color: #fff; box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2); }
-.btn-save:hover { transform: translateY(-1px); opacity: 0.95; }
-.btn-outline { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
 
 /* METRICS & CHARTS */
 .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
@@ -129,7 +145,8 @@ textarea:focus { outline: none; border-color: var(--accent); }
 .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; font-weight: 700; margin-top: 4px; }
 
 /* MODALS & FLOATING CAM */
-.floating-cam { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 99; width: 68px; height: 68px; border-radius: 50%; background: var(--accent-gradient); border: 4px solid var(--bg); box-shadow: 0 10px 30px rgba(108, 99, 255, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.floating-cam { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 99; width: 68px; height: 68px; border-radius: 50%; background: var(--accent-gradient); border: 4px solid var(--bg); box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.floating-cam:hover { transform: translateX(-50%) scale(1.05); }
 .modal-overlay, .key-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
 .modal-overlay.open, .key-overlay.open { display: flex; }
 .key-overlay { align-items: center; }
@@ -486,7 +503,7 @@ window.renderCharts = () => {
       labels: ['Deep Work', 'Spiritual', 'Regeneration', 'Digital Saliency', 'Nutrition', 'Other'],
       datasets: [{
         data: [dataset.study, dataset.ibadah, dataset.sleep, dataset.phone, dataset.meals, dataset.other],
-        backgroundColor: ['#6c63ff', '#00d9a6', '#f6c90e', '#ff6b6b', '#a78bfa', '#4a5568'],
+        backgroundColor: ['#ff6b35', '#00d9a6', '#f6c90e', '#ff6b6b', '#a78bfa', '#4a5568'],
         borderWidth: 0
       }]
     },

@@ -9,13 +9,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root[data-theme="dark"] {
-  --bg: #090b0f;
-  --surface: rgba(21, 24, 33, 0.75);
+  /* Dynamic multi-color ambient background blend */
+  --bg: radial-gradient(circle at 10% 20%, rgba(255, 107, 107, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(108, 99, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 165, 0, 0.1) 0%, transparent 50%),
+        #090b0f;
+  --surface: rgba(21, 24, 33, 0.8);
   --surface2: rgba(28, 32, 48, 0.9);
   --border: rgba(255, 255, 255, 0.12);
-  --border-focus: #ff6b35;
-  --accent: #ff6b35;
-  --accent-gradient: linear-gradient(135deg, #ff6b35, #ff8c00);
+  --border-focus: #ffbc00;
+  --accent: #ff9f1c;
+  --accent-gradient: linear-gradient(135deg, #ffbc00, #ff6b35); /* Yellow-Orange Mix */
   --accent2: #00d9a6;
   --text: #e8eaf0;
   --text2: #8892a4;
@@ -24,22 +28,25 @@
   --warning: #f6c90e;
   --danger: #ff6b6b;
   --glass-blur: blur(20px);
-  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  
-  /* High Contrast Auth Specifics */
-  --auth-tab-bg: #141822;
-  --auth-tab-active: #fff;
-  --auth-tab-active-text: #090b0f;
+  --shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+
+  /* Tab Colors */
+  --tab-inactive-bg: rgba(255, 255, 255, 0.03);
+  --tab-inactive-text: rgba(255, 255, 255, 0.4);
 }
 
 :root[data-theme="light"] {
-  --bg: #f4f6fa;
-  --surface: rgba(255, 255, 255, 0.9);
+  /* Bright ambient mesh background mix (Orange, Blue, Red tints) */
+  --bg: radial-gradient(circle at 15% 15%, rgba(255, 92, 141, 0.25) 0%, transparent 35%),
+        radial-gradient(circle at 85% 85%, rgba(65, 105, 225, 0.2) 0%, transparent 45%),
+        radial-gradient(circle at 50% 75%, rgba(255, 165, 0, 0.25) 0%, transparent 40%),
+        #f4f6fa;
+  --surface: rgba(255, 255, 255, 0.85);
   --surface2: rgba(235, 239, 248, 0.9);
-  --border: rgba(0, 0, 0, 0.15);
+  --border: rgba(0, 0, 0, 0.12);
   --border-focus: #e65100;
   --accent: #e65100;
-  --accent-gradient: linear-gradient(135deg, #e65100, #ff6d00);
+  --accent-gradient: linear-gradient(135deg, #ffb300, #ff6d00); /* Yellow-Orange Mix */
   --accent2: #05b58c;
   --text: #1a1d24;
   --text2: #4a5568;
@@ -48,17 +55,16 @@
   --warning: #e6b400;
   --danger: #e53e3e;
   --glass-blur: blur(20px);
-  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
+  --shadow: 0 12px 40px rgba(255, 109, 0, 0.1);
 
-  /* High Contrast Auth Specifics */
-  --auth-tab-bg: #e2e8f0;
-  --auth-tab-active: #1a1d24;
-  --auth-tab-active-text: #fff;
+  /* Tab Colors */
+  --tab-inactive-bg: rgba(0, 0, 0, 0.04);
+  --tab-inactive-text: rgba(0, 0, 0, 0.4);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease, color 0.2s ease; }
-body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
-body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+body { font-family: 'Sora', sans-serif; background: var(--bg); background-attachment: fixed; color: var(--text); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; opacity: 0.5; }
 
 /* PREMIUM CARD GLASSMORPHISM */
 .card, .auth-box, .modal-sheet, .key-box {
@@ -67,40 +73,56 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  border-radius: 16px;
+  border-radius: 20px;
 }
 
 /* BOOT SCREEN */
-#boot-screen { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.4s; }
+#boot-screen { position: fixed; inset: 0; background: #090b0f; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: opacity 0.4s; }
 #boot-screen.hidden { opacity: 0; pointer-events: none; }
 .boot-logo { font-size: 48px; animation: bounce 1s ease infinite alternate; }
 @keyframes bounce { from { transform: translateY(0) } to { transform: translateY(-10px) } }
 .boot-text { font-size: 14px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
-.boot-bar { width: 160px; height: 3px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+.boot-bar { width: 160px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
 .boot-fill { height: 100%; background: var(--accent-gradient); border-radius: 999px; animation: load 2s ease forwards; }
 @keyframes load { from { width: 0 } to { width: 100% } }
 
-/* HIGH CONTRAST AUTH SCREEN BUTTONS & TABS */
-#auth-screen { position: fixed; inset: 0; background: var(--bg); z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
+/* CUSTOM VISUAL AUTH SCREEN SETTINGS */
+#auth-screen { position: fixed; inset: 0; z-index: 900; display: none; align-items: center; justify-content: center; padding: 20px; }
 #auth-screen.show { display: flex; }
-.auth-box { padding: 36px 28px; width: 100%; max-width: 420px; }
-.auth-title { text-align: center; font-size: 24px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
-.auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 28px; }
+.auth-box { padding: 40px 32px; width: 100%; max-width: 420px; border: 1px solid rgba(255, 255, 255, 0.15); }
+.auth-title { text-align: center; font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+.auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 32px; }
 
-.auth-tabs { display: flex; background: var(--auth-tab-bg); border-radius: 12px; padding: 6px; margin-bottom: 24px; border: 1px solid var(--border); }
-.auth-tab { flex: 1; padding: 12px; text-align: center; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; color: var(--text2); border: none; background: none; font-family: 'Sora', sans-serif; }
-.auth-tab.active { background: var(--auth-tab-active); color: var(--auth-tab-active-text); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+/* Custom Login / Register Tab Layout */
+.auth-tabs { display: flex; background: var(--tab-inactive-bg); border-radius: 14px; padding: 6px; margin-bottom: 28px; border: 1px solid var(--border); gap: 6px; }
+.auth-tab { flex: 1; padding: 14px; text-align: center; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; color: var(--tab-inactive-text); border: none; background: transparent; font-family: 'Sora', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-.auth-field { margin-bottom: 20px; position: relative; }
+/* 1. Login Active Tab: Vibrant Red-Orange Mix */
+.auth-tab.login-tab.active {
+  background: linear-gradient(135deg, #ff3333, #ff6a00);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(255, 51, 51, 0.35);
+}
+
+/* 2. Register Active Tab: Vibrant Green-Blue Mix */
+.auth-tab.register-tab.active {
+  background: linear-gradient(135deg, #00b4d8, #00f5d4);
+  color: #090b0f;
+  box-shadow: 0 6px 15px rgba(0, 180, 216, 0.35);
+}
+
+.auth-field { margin-bottom: 22px; position: relative; }
 .auth-field label { font-size: 11px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
-.auth-field input { width: 100%; padding: 14px 44px 14px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text); font-family: 'Sora', sans-serif; }
-.auth-field input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2); }
+.auth-field input { width: 100%; padding: 14px 44px 14px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; font-size: 14px; color: var(--text); font-family: 'Sora', sans-serif; }
+.auth-field input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(255, 188, 0, 0.2); }
 .pass-toggle { position: absolute; right: 16px; bottom: 14px; cursor: pointer; color: var(--text2); user-select: none; font-size: 16px; }
 
-/* HIGH CONTRAST BUTTON SIGNATURES */
-.btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-.btn-save { background: var(--accent-gradient); color: #fff; box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3); }
-.btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 107, 53, 0.45); }
+/* 3. Access Account Button: Premium Yellow-Orange Mix */
+.btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.btn-save { background: var(--accent-gradient); color: #090b0f; font-weight: 800; box-shadow: 0 6px 25px rgba(255, 179, 0, 0.35); }
+[data-theme="dark"] .btn-save { color: #090b0f; } /* Optimal contrast for text on yellow-orange */
+[data-theme="light"] .btn-save { color: #ffffff; }
+.btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 140, 0, 0.5); }
 .btn-save:active { transform: translateY(0); }
 .btn-outline { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
 .btn-outline:hover { border-color: var(--text2); color: var(--text); }
@@ -145,7 +167,7 @@ textarea:focus { outline: none; border-color: var(--accent); }
 .metric-label { font-size: 10px; color: var(--text3); text-transform: uppercase; font-weight: 700; margin-top: 4px; }
 
 /* MODALS & FLOATING CAM */
-.floating-cam { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 99; width: 68px; height: 68px; border-radius: 50%; background: var(--accent-gradient); border: 4px solid var(--bg); box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.floating-cam { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 99; width: 68px; height: 68px; border-radius: 50%; background: var(--accent-gradient); border: 4px solid var(--bg); box-shadow: 0 10px 30px rgba(255, 140, 0, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 26px; transition: all 0.2s; }
 .floating-cam:hover { transform: translateX(-50%) scale(1.05); }
 .modal-overlay, .key-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
 .modal-overlay.open, .key-overlay.open { display: flex; }
@@ -181,9 +203,10 @@ textarea:focus { outline: none; border-color: var(--accent); }
     <div class="auth-title">Welcome Back</div>
     <div class="auth-sub">Track your life metrics gracefully.</div>
 
+    <!-- Assigned separate tracking classes for distinct active color switches -->
     <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-      <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+      <button class="auth-tab login-tab active" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab register-tab" onclick="switchAuthTab('register')">Register</button>
     </div>
 
     <div id="auth-error" class="toast error" style="position:static; transform:none; opacity:1; display:none; margin-bottom:15px;"></div>
@@ -452,7 +475,10 @@ window.switchAuthTab = (tab) => {
   document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-  event.target.classList.add('active');
+  
+  // Track event correctly even if inline target properties alter
+  const activeTab = tab === 'login' ? document.querySelector('.login-tab') : document.querySelector('.register-tab');
+  if(activeTab) activeTab.classList.add('active');
 };
 
 window.showTab = (tabId) => {
@@ -503,7 +529,7 @@ window.renderCharts = () => {
       labels: ['Deep Work', 'Spiritual', 'Regeneration', 'Digital Saliency', 'Nutrition', 'Other'],
       datasets: [{
         data: [dataset.study, dataset.ibadah, dataset.sleep, dataset.phone, dataset.meals, dataset.other],
-        backgroundColor: ['#ff6b35', '#00d9a6', '#f6c90e', '#ff6b6b', '#a78bfa', '#4a5568'],
+        backgroundColor: ['#ff8c00', '#00d9a6', '#f6c90e', '#ff6b6b', '#a78bfa', '#4a5568'],
         borderWidth: 0
       }]
     },

@@ -92,23 +92,18 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .auth-box { padding: 40px 32px; width: 100%; max-width: 420px; border: 1px solid rgba(255, 255, 255, 0.15); }
 .auth-title { text-align: center; font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
 .auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 32px; }
-
-/* Custom Login / Register Tab Layout */
-.auth-tabs { display: flex; background: var(--tab-inactive-bg); border-radius: 14px; padding: 6px; margin-bottom: 28px; border: 1px solid var(--border); gap: 6px; }
-.auth-tab { flex: 1; padding: 14px; text-align: center; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; color: var(--tab-inactive-text); border: none; background: transparent; font-family: 'Sora', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-
-/* 1. Login Active Tab: Vibrant Red-Orange Mix */
+/* 1. Login Active Tab: Vibrant Orange-Red to Yellow-Orange Mix */
 .auth-tab.login-tab.active {
-  background: linear-gradient(135deg, #ff3333, #ff6a00);
+  background: linear-gradient(135deg, #ff4e11, #ff9f00);
   color: #ffffff;
-  box-shadow: 0 6px 15px rgba(255, 51, 51, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 78, 17, 0.4);
 }
 
-/* 2. Register Active Tab: Vibrant Green-Blue Mix */
+/* 2. Register Active Tab: Vibrant Emerald Green to Mint Teal Mix */
 .auth-tab.register-tab.active {
-  background: linear-gradient(135deg, #00b4d8, #00f5d4);
-  color: #090b0f;
-  box-shadow: 0 6px 15px rgba(0, 180, 216, 0.35);
+  background: linear-gradient(135deg, #019974, #12e283);
+  color: #ffffff; /* Swapped to white text for better readability and style match */
+  box-shadow: 0 6px 20px rgba(1, 153, 116, 0.4);
 }
 
 .auth-field { margin-bottom: 22px; position: relative; }

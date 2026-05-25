@@ -92,19 +92,26 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .auth-box { padding: 40px 32px; width: 100%; max-width: 420px; border: 1px solid rgba(255, 255, 255, 0.15); }
 .auth-title { text-align: center; font-size: 26px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
 .auth-sub { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 32px; }
-/* 1. Login Active Tab: Vibrant Orange-Red to Yellow-Orange Mix */
-.auth-tab.login-tab.active {
-  background: linear-gradient(135deg, #ff4e11, #ff9f00);
-  color: #ffffff;
+
+/* Custom Login / Register Tab Layout */
+.auth-tabs { display: flex; background: var(--tab-inactive-bg); border-radius: 14px; padding: 6px; margin-bottom: 28px; border: 1px solid var(--border); gap: 6px; }
+.auth-tab { flex: 1; padding: 14px; text-align: center; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; color: var(--tab-inactive-text); border: none; background: transparent; font-family: 'Sora', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* 1. Login Active Tab & Action Button: Vibrant Orange-Red to Yellow-Orange Mix */
+.auth-tab.login-tab.active, .btn-login-action {
+  background: linear-gradient(135deg, #ff4e11, #ff9f00) !important;
+  color: #ffffff !important;
   box-shadow: 0 6px 20px rgba(255, 78, 17, 0.4);
 }
+.btn-login-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 78, 17, 0.55); }
 
-/* 2. Register Active Tab: Vibrant Emerald Green to Mint Teal Mix */
-.auth-tab.register-tab.active {
-  background: linear-gradient(135deg, #019974, #12e283);
-  color: #ffffff; /* Swapped to white text for better readability and style match */
+/* 2. Register Active Tab & Action Button: Vibrant Emerald Green to Mint Teal Mix */
+.auth-tab.register-tab.active, .btn-register-action {
+  background: linear-gradient(135deg, #019974, #12e283) !important;
+  color: #ffffff !important;
   box-shadow: 0 6px 20px rgba(1, 153, 116, 0.4);
 }
+.btn-register-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(1, 153, 116, 0.55); }
 
 .auth-field { margin-bottom: 22px; position: relative; }
 .auth-field label { font-size: 11px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -112,10 +119,10 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .auth-field input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 2px rgba(255, 188, 0, 0.2); }
 .pass-toggle { position: absolute; right: 16px; bottom: 14px; cursor: pointer; color: var(--text2); user-select: none; font-size: 16px; }
 
-/* 3. Access Account Button: Premium Yellow-Orange Mix */
+/* 3. Global App Saving Button: Premium Theme-wide Variant */
 .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
 .btn-save { background: var(--accent-gradient); color: #090b0f; font-weight: 800; box-shadow: 0 6px 25px rgba(255, 179, 0, 0.35); }
-[data-theme="dark"] .btn-save { color: #090b0f; } /* Optimal contrast for text on yellow-orange */
+[data-theme="dark"] .btn-save { color: #090b0f; }
 [data-theme="light"] .btn-save { color: #ffffff; }
 .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 140, 0, 0.5); }
 .btn-save:active { transform: translateY(0); }
@@ -184,7 +191,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
 </head>
 <body>
 
-<!-- BOOT SCREEN -->
 <div id="boot-screen">
   <div class="boot-logo">📊</div>
   <div class="boot-text" id="boot-text">System initializing...</div>
@@ -192,13 +198,11 @@ textarea:focus { outline: none; border-color: var(--accent); }
   <div class="boot-error" id="boot-error" style="display:none; color:var(--danger); font-size:12px; margin-top:10px;"></div>
 </div>
 
-<!-- AUTH SCREEN -->
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-title">Welcome Back</div>
     <div class="auth-sub">Track your life metrics gracefully.</div>
 
-    <!-- Assigned separate tracking classes for distinct active color switches -->
     <div class="auth-tabs">
       <button class="auth-tab login-tab active" onclick="switchAuthTab('login')">Login</button>
       <button class="auth-tab register-tab" onclick="switchAuthTab('register')">Register</button>
@@ -206,7 +210,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
 
     <div id="auth-error" class="toast error" style="position:static; transform:none; opacity:1; display:none; margin-bottom:15px;"></div>
 
-    <!-- LOGIN FORM -->
     <div id="login-form">
       <div class="auth-field">
         <label>Email Address</label>
@@ -217,10 +220,9 @@ textarea:focus { outline: none; border-color: var(--accent); }
         <input type="password" id="login-password" placeholder="••••••••">
         <span class="pass-toggle" onclick="togglePasswordVisibility('login-password')">👁️</span>
       </div>
-      <button class="auth-btn btn btn-save" onclick="doLogin()">🔑 Access Account</button>
+      <button class="auth-btn btn btn-login-action" onclick="doLogin()">🔑 Access Account</button>
     </div>
 
-    <!-- REGISTER FORM -->
     <div id="register-form" style="display:none;">
       <div class="auth-field">
         <label>Your Name</label>
@@ -235,12 +237,11 @@ textarea:focus { outline: none; border-color: var(--accent); }
         <input type="password" id="reg-password" placeholder="Minimum 6 characters">
         <span class="pass-toggle" onclick="togglePasswordVisibility('reg-password')">👁️</span>
       </div>
-      <button class="auth-btn btn btn-save" onclick="doRegister()">✨ Establish Account</button>
+      <button class="auth-btn btn btn-register-action" onclick="doRegister()">✨ Establish Account</button>
     </div>
   </div>
 </div>
 
-<!-- MAIN APPLICATION SPACE -->
 <div id="main-app" style="display:none;">
   <div class="header">
     <div class="header-brand">
@@ -266,10 +267,9 @@ textarea:focus { outline: none; border-color: var(--accent); }
     <button class="tab" onclick="showTab('history')">📅 Historical Ledger</button>
   </div>
 
-  <!-- CHECKLIST SECTION -->
   <div id="tab-checklist" class="section active">
     <div class="card">
-      <h3><span class="accent-dot"></span>🕌 Prayer Observances</h3>
+      <h3><span class="accent-dot"></span>¼ Prayer Observances</h3>
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Fajr')"><span class="checklist-label">Fajr Protocol</span></div>
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Zuhr')"><span class="checklist-label">Zuhr Protocol</span></div>
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Asr')"><span class="checklist-label">Asr Protocol</span></div>
@@ -277,19 +277,18 @@ textarea:focus { outline: none; border-color: var(--accent); }
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Isha')"><span class="checklist-label">Isha Protocol</span></div>
     </div>
     <div class="card">
-      <h3><span class="accent-dot"></span>📿 Core Focus</h3>
+      <h3><span class="accent-dot"></span>¯ Core Focus</h3>
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Zikr')"><span class="checklist-label">Mindful Recitations (Zikr)</span></div>
       <div class="checklist-item"><input type="checkbox" onchange="check(this,'Tilawat')"><span class="checklist-label">Scriptural Reading (Tilawat)</span></div>
     </div>
     <button class="btn btn-save" onclick="showTab('time')">Proceed to Time Vectors →</button>
   </div>
 
-  <!-- TIME VECTOR TRACKING -->
   <div id="tab-time" class="section">
     <div class="card">
       <h3><span class="accent-dot"></span>⏱️ Time Ledger Matrix (Hours)</h3>
       <div class="time-row"><span class="checklist-label">📚 Deep Work & Learning</span><input type="number" id="t-study" value="0"></div>
-      <div class="time-row"><span class="checklist-label">🕌 Spiritual Disciplines</span><input type="number" id="t-ibadah" value="0"></div>
+      <div class="time-row"><span class="checklist-label">¼ Spiritual Disciplines</span><input type="number" id="t-ibadah" value="0"></div>
       <div class="time-row"><span class="checklist-label">😴 Neuro Regeneration (Sleep)</span><input type="number" id="t-sleep" value="0"></div>
       <div class="time-row"><span class="checklist-label">📱 Digital Saliency (Mobile)</span><input type="number" id="t-phone" value="0"></div>
       <div class="time-row"><span class="checklist-label">🍽️ Nourishment Protocols</span><input type="number" id="t-meals" value="0"></div>
@@ -298,7 +297,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
     <button class="btn btn-save" onclick="showTab('reflect')">Proceed to Reflections →</button>
   </div>
 
-  <!-- INTROSPECTION SECTION -->
   <div id="tab-reflect" class="section">
     <div class="card">
       <h3><span class="accent-dot"></span>📝 Evening Review Insights</h3>
@@ -309,7 +307,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
     <button class="btn btn-save" onclick="saveDay()">💾 Archive Matrix Metrics</button>
   </div>
 
-  <!-- METRICS AND DESIGN INSIGHTS -->
   <div id="tab-charts" class="section">
     <div class="metrics">
       <div class="metric"><div class="metric-val" id="m-score">0%</div><div class="metric-label">Efficiency Quotient</div></div>
@@ -321,7 +318,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
     </div>
   </div>
 
-  <!-- HISTORICAL ENGINE -->
   <div id="tab-history" class="section">
     <div id="history-list"></div>
   </div>
@@ -329,7 +325,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
   <button class="floating-cam" onclick="openCamera()">📷</button>
 </div>
 
-<!-- API INTERFACE CONTROL MODAL -->
 <div class="key-overlay" id="key-overlay">
   <div class="key-box">
     <h3>🔑 Machine Intelligence Credentials</h3>
@@ -342,7 +337,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
 
 <div class="toast" id="toast"></div>
 
-<!-- MODULE INTEGRATION GATEWAY -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -350,7 +344,6 @@ import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serve
 
 let firebaseConfig;
 
-// Setup & Initialization Sequence
 async function bootApp() {
   try {
     const res = await fetch('/.netlify/functions/get-config');
@@ -361,7 +354,6 @@ async function bootApp() {
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Dynamic Module Binding directly into global scope safely
     window.auth = auth;
     window.db = db;
 
@@ -419,13 +411,11 @@ window._executeLogout = async () => signOut(window.auth);
 bootApp();
 </script>
 
-<!-- SYSTEM LAYOUT ENGINE & GRAPHICS EXECUTION -->
 <script>
 const appState = { dailyLogs: [], checklist: {} };
 window.appState = appState;
 let pieChartInstance = null;
 
-// Premium UI Theme Controller 
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -435,120 +425,11 @@ function toggleTheme() {
 }
 window.toggleTheme = toggleTheme;
 
-// Theme Preference Check
 if (localStorage.getItem('theme_preference') === 'light') {
   document.documentElement.setAttribute('data-theme', 'light');
 }
 
-// Password eye toggle function
 function togglePasswordVisibility(fieldId) {
   const input = document.getElementById(fieldId);
   if (input.type === 'password') {
-    input.type = 'text';
-  } else {
-    input.type = 'password';
-  }
-}
-window.togglePasswordVisibility = togglePasswordVisibility;
-
-window.showToast = (msg, type = '') => {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast show ${type}`;
-  setTimeout(() => t.classList.remove('show'), 3000);
-};
-
-window.setSyncStatus = (status) => {
-  const dot = document.getElementById('sync-dot');
-  const lbl = document.getElementById('sync-label');
-  if(!dot || !lbl) return;
-  dot.className = `sync-dot ${status}`;
-  lbl.textContent = status === 'synced' ? 'Synced' : status === 'syncing' ? 'Syncing...' : 'Error';
-};
-
-window.switchAuthTab = (tab) => {
-  document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
-  
-  // Track event correctly even if inline target properties alter
-  const activeTab = tab === 'login' ? document.querySelector('.login-tab') : document.querySelector('.register-tab');
-  if(activeTab) activeTab.classList.add('active');
-};
-
-window.showTab = (tabId) => {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(`tab-${tabId}`).classList.add('active');
-  if(tabId === 'charts') window.renderCharts();
-};
-
-window.check = (cb, item) => { appState.checklist[item] = cb.checked; };
-
-window.saveDay = async () => {
-  const log = {
-    fullDate: new Date().toISOString().split('T')[0],
-    checklist: { ...appState.checklist },
-    timeMetrics: {
-      study: parseFloat(document.getElementById('t-study').value) || 0,
-      ibadah: parseFloat(document.getElementById('t-ibadah').value) || 0,
-      sleep: parseFloat(document.getElementById('t-sleep').value) || 0,
-      phone: parseFloat(document.getElementById('t-phone').value) || 0,
-      meals: parseFloat(document.getElementById('t-meals').value) || 0,
-      other: parseFloat(document.getElementById('t-other').value) || 0,
-    }
-  };
-  const complete = await window._saveLogToCloud(log);
-  if(complete) { window.showToast('Metrics committed gracefully to secure ledger.', 'success'); window.showTab('charts'); }
-};
-
-window.refreshAllData = () => {
-  if(!appState.dailyLogs.length) return;
-  const metrics = appState.dailyLogs[0];
-  const total = Object.keys(metrics.checklist).length;
-  const done = Object.values(metrics.checklist).filter(Boolean).length;
-  document.getElementById('m-score').textContent = total ? `${Math.round((done/total)*100)}%` : '0%';
-};
-
-window.renderCharts = () => {
-  if(!appState.dailyLogs.length) return;
-  const dataset = appState.dailyLogs[0].timeMetrics;
-  const ctx = document.getElementById('pie-chart').getContext('2d');
-  if (pieChartInstance) pieChartInstance.destroy();
-  
-  const textColor = document.documentElement.getAttribute('data-theme') === 'light' ? '#1a1d24' : '#e8eaf0';
-
-  pieChartInstance = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Deep Work', 'Spiritual', 'Regeneration', 'Digital Saliency', 'Nutrition', 'Other'],
-      datasets: [{
-        data: [dataset.study, dataset.ibadah, dataset.sleep, dataset.phone, dataset.meals, dataset.other],
-        backgroundColor: ['#ff8c00', '#00d9a6', '#f6c90e', '#ff6b6b', '#a78bfa', '#4a5568'],
-        borderWidth: 0
-      }]
-    },
-    options: { 
-      responsive: true, 
-      maintainAspectRatio: false, 
-      plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Sora' } } } } 
-    }
-  });
-};
-
-window.doLogin = () => {
-  const e = document.getElementById('login-email').value;
-  const p = document.getElementById('login-password').value;
-  window._executeLogin(e, p).catch(err => window.showToast(err.message, 'error'));
-};
-
-window.doRegister = () => {
-  const e = document.getElementById('reg-email').value;
-  const p = document.getElementById('reg-password').value;
-  window._executeRegister(e, p).catch(err => window.showToast(err.message, 'error'));
-};
-
-window.doLogout = () => window._executeLogout();
-</script>
-</body>
-</html>
+    input.type

@@ -507,6 +507,45 @@ window.refreshAllData = () => {
     const namazEl = document.getElementById('m-namaz');
     if (namazEl) namazEl.textContent = `${prayersDone}/5`;
   }
+
+  const historyList = document.getElementById('history-list');
+  historyList.innerHTML = '';
+  if(appState.dailyLogs.length === 0) {
+    historyList.innerHTML = '<p style="color:var(--text2); text-align:center; padding:40px;">No history found.</p>';
+    return;
+  }
+  appState.dailyLogs.forEach(log => {
+    const prayerKeys = ['Fajr','Zuhr','Asr','Maghrib','Isha'];
+    const checklist = log.checklist || {};
+    const prayersDone = prayerKeys.filter(k => checklist[k]).length;
+    const total = Object.keys(checklist).length;
+    const done = Object.values(checklist).filter(Boolean).length;
+    const score = total ? Math.round((done/total)*100) : 0;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '16px';
+    card.innerHTML = `
+      <h3 style="margin-bottom:12px;">
+        <span class="accent-dot"></span>
+        📅 ${log.fullDate || 'Unknown Date'}
+      </h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+        <div class="metric"><div class="metric-val">${score}%</div><div class="metric-label">Efficiency</div></div>
+        <div class="metric"><div class="metric-val">${prayersDone}/5</div><div class="metric-label">Prayers</div></div>
+      </div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:10px;">
+        <b style="color:var(--text);">⏱️ Time Breakdown:</b><br>
+        📚 Study: ${log.time?.study || 0}h &nbsp;|&nbsp;
+        😴 Sleep: ${log.time?.sleep || 0}h &nbsp;|&nbsp;
+        📱 Phone: ${log.time?.phone || 0}h &nbsp;|&nbsp;
+        🍽️ Meals: ${log.time?.meals || 0}h
+      </div>
+      ${log.gratitude ? `<div style="font-size:12px; margin-bottom:6px;"><b style="color:var(--accent);">🙏 Gratitude:</b><p style="color:var(--text2); margin-top:4px;">${log.gratitude}</p></div>` : ''}
+      ${log.learning ? `<div style="font-size:12px; margin-bottom:6px;"><b style="color:var(--accent);">💡 Learning:</b><p style="color:var(--text2); margin-top:4px;">${log.learning}</p></div>` : ''}
+      ${log.mistakes ? `<div style="font-size:12px;"><b style="color:var(--danger);">⚠️ Mistakes:</b><p style="color:var(--text2); margin-top:4px;">${log.mistakes}</p></div>` : ''}
+    `;
+    historyList.appendChild(card);
+  });
 };
 
 function doLogin() {
@@ -545,8 +584,29 @@ window.openKeyModal = () => document.getElementById('key-overlay').classList.add
 window.closeKeyModal = () => document.getElementById('key-overlay').classList.remove('open');
 window.saveKey = () => { window.showToast('API Key cached securely.', 'success'); window.closeKeyModal(); };
 window.openCamera = () => { window.showToast('Camera peripheral initialization requested.', 'success'); };
-window.saveDay = () => { window.showToast('Form metric logging completed.', 'success'); };
-
+window.saveDay = async () => {
+  const logData = {
+    fullDate: new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+    checklist: { ...appState.checklist },
+    time: {
+      study:  parseFloat(document.getElementById('t-study').value)  || 0,
+      ibadah: parseFloat(document.getElementById('t-ibadah').value) || 0,
+      sleep:  parseFloat(document.getElementById('t-sleep').value)  || 0,
+      phone:  parseFloat(document.getElementById('t-phone').value)  || 0,
+      meals:  parseFloat(document.getElementById('t-meals').value)  || 0,
+      other:  parseFloat(document.getElementById('t-other').value)  || 0,
+    },
+    gratitude: document.getElementById('gratitude').value,
+    learning:  document.getElementById('learning').value,
+    mistakes:  document.getElementById('mistakes').value,
+  };
+  const saved = await window._saveLogToCloud(logData);
+  if(saved) {
+    window.showToast('✅ Day archived successfully!', 'success');
+  } else {
+    window.showToast('❌ Save failed. Check connection.', 'error');
+  }
+};
 document.addEventListener("DOMContentLoaded", () => {
   const dateDisp = document.getElementById('date-display');
   if(dateDisp) dateDisp.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
